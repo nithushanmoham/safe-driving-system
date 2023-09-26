@@ -3,6 +3,7 @@ import mediapipe as mp
 import time
 import utils, math
 import numpy as np
+import os
 import playsound
 
 # variables
