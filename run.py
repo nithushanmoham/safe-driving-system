@@ -6,6 +6,8 @@ import utils, math
 import numpy as np
 import playsound
 
+arduino = serial.Serial('COMX', 9600)  # Replace 'COMX' with your Arduino's COM port
+
 # variables
 frame_counter = 0
 CEF_COUNTER = 0
