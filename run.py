@@ -113,9 +113,6 @@ with map_face_mesh.FaceMesh(min_detection_confidence=0.5, min_tracking_confidenc
                                               2, utils.YELLOW, pad_x=4, pad_y=6, )
                     playsound.playsound('C:/Users/Nithushan/OneDrive/Desktop/safe-driving-system/audio.mp3')
 
-                if len(frame) >0:
-                    board.digital[10].write(1)
-
                 else :
                     board.digital[10].write(0)
 
