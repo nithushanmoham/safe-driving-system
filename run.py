@@ -5,8 +5,6 @@ import utils, math
 import numpy as np
 import playsound
 
-board = Arduino('COM5')
-
 # variables
 frame_counter = 0
 CEF_COUNTER = 0
