@@ -1,7 +1,6 @@
 import cv2 as cv
 import mediapipe as mp
 import time
-from pyfirmata import Arduino
 import utils, math
 import numpy as np
 import playsound
