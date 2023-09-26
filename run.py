@@ -1,6 +1,7 @@
 import cv2 as cv
 import mediapipe as mp
 import time
+import serial
 import utils, math
 import numpy as np
 import playsound
