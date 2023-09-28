@@ -1,10 +1,19 @@
 import cv2 as cv
 import mediapipe as mp
 import time
+import serial
 import utils, math
 import numpy as np
+from pyfirmata import Arduino, util
 import playsound
 
+# Initialize Arduino Uno
+board = Arduino('COM5')
+it = util.Iterator(board)
+it.start()
+
+# Define the LED pin
+led_pin = board.get_pin('d:10:o')
 
 # variables
 frame_counter = 0
@@ -95,27 +104,32 @@ with map_face_mesh.FaceMesh(min_detection_confidence=0.5, min_tracking_confidenc
             ratio = blinkRatio(frame, mesh_coords, RIGHT_EYE, LEFT_EYE)
 
             utils.colorBackgroundText(frame, f'Ratio : {round(ratio, 2)}', FONTS, 0.7, (30, 100), 2, utils.PINK,
-                                      utils.BLUE)
+                                      utils.YELLOW)
             
             if ratio > 5:
                 CEF_COUNTER += 1
 
-                if CEF_COUNTER <= 3:
-                    utils.colorBackgroundText(frame, f'1', FONTS, 5, (430, 200), 6, utils.WHITE, utils.RED, pad_x=4,
-                                              pad_y=6, )
-                elif CEF_COUNTER <= 20:
-                    utils.colorBackgroundText(frame, f'2', FONTS, 5, (430, 200), 6, utils.WHITE, utils.RED, pad_x=4,
-                                              pad_y=6, )
-                elif CEF_COUNTER <= CLOSED_EYES_FRAME:
-                    utils.colorBackgroundText(frame, f'3', FONTS, 5, (430, 200), 6, utils.WHITE, utils.RED, pad_x=4,
-                                              pad_y=6, )
-                if CEF_COUNTER > CLOSED_EYES_FRAME:
-                    utils.colorBackgroundText(frame, f'Drowsiness Alert...', FONTS, 1.7, (250, 150),
-                                              2, utils.YELLOW, pad_x=4, pad_y=6, )
-                    playsound.playsound('C:/Users/Nithushan/OneDrive/Desktop/safe-driving-system/audio.mp3')
+            if CEF_COUNTER <= 3:
+                # Blink the LED
+                led_pin.write(1)
+                # Rest of your code...
+            elif CEF_COUNTER <= 20:
+                # Blink the LED
+                led_pin.write(1)
+                # Rest of your code...
+            elif CEF_COUNTER <= CLOSED_EYES_FRAME:
+                # Blink the LED
+                led_pin.write(1)
+                # Rest of your code...
+            if CEF_COUNTER > CLOSED_EYES_FRAME:
+                # Blink the LED
+                led_pin.write(1)
+                playsound.playsound('C:/Users/Nithushan/OneDrive/Desktop/safe-driving-system/audio.mp3')
+        else:
+            # Turn off the LED
+            led_pin.write(0)
+            CEF_COUNTER = 0
 
-            else:
-                CEF_COUNTER = 0
 
             cv.polylines(frame, [np.array([mesh_coords[p] for p in LEFT_EYE], dtype=np.int32)], True, utils.GREEN, 1,
                          cv.LINE_AA)
@@ -136,4 +150,3 @@ with map_face_mesh.FaceMesh(min_detection_confidence=0.5, min_tracking_confidenc
             break
     cv.destroyAllWindows()
     camera.release()
-
